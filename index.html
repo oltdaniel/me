@@ -16,7 +16,7 @@ layout: default
         <h3># articles</h3>
 
         {% for post in site.posts %}
-        <post onclick="r('{{ post.url }}')">
+        <post onclick="r('{{ post.url | absolute_url }}')">
             <row>
                 <post-title>{{ post.title }}</post-title>
                 <post-date>{{ post.date | date: "%-d %B %Y" }}</post-date>
