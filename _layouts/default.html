@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+        <link rel="stylesheet" href="{{ "/assets/style.css" | absolute_url }}">
+        <link rel="stylesheet" href="https://api.oltdaniel.at/style.css">
+
+        <title>oltdaniel{% if page.title %} - {{ page.title }}{% endif %}</title>
+    </head>
+    <body>
+        {{ content }}
+
+        <footer>
+            <span>Copyright (C) 2019  Daniel Oltmanns</span>
+        </footer>
+    </body>
+
+    <script src="{{ "/assets/script.js" | absolute_url }}" charset="utf-8"></script>
+</html>

@@ -1,28 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+---
+layout: default
+---
+<main>
+    <me>
+        <img src="{{ "/assets/me.jpg" | absolute_url }}" alt="me">
+        <h2>Daniel Oltmanns</h2>
+        <span>&#xa5; b2dc4d54 Germany</span>
+        <span>&#x40;<a href="https://github.com/oltdaniel" target="_blank">oltdaniel</a> GitHub</span>
+        <span>&#x23;privacy  &#x23;cryptography</span>
+        <span>&#xf7;c  &#xf7;golang &#xf7;ruby</span>
+        <span>&#x7d; MIT License</span>
+    </me>
 
-        <link rel="stylesheet" href="/assets/css/style.css">
+    <posts>
+        <h3># articles</h3>
 
-        <title>oltdaniel</title>
-    </head>
-    <body>
-        <main>
-            <me>
-                <img src="/assets/img/me.jpg" alt="me">
-                <h2>Daniel Oltmanns</h2>
-                <span>&#xa5; b2dc4d54 Germany</span>
-                <span>&#x40;<a href="https://github.com/oltdaniel" target="_blank">oltdaniel</a> GitHub</span>
-                <span>&#x23;privacy  &#x23;cryptography</span>
-                <span>&#xf7;c  &#xf7;golang &#xf7;ruby</span>
-                <span>&#x7d; MIT License</span>
-            </me>
-        </main>
-
-        <footer>
-            <span>Copyright (C) 2019  Daniel Oltmanns</span>
-        </footer>
-    </body>
-</html>
+        {% for post in site.posts %}
+        <post onclick="r('{{ post.url }}')">
+            <row>
+                <post-title>{{ post.title }}</post-title>
+                <post-date>{{ post.date | date: "%-d %B %Y" }}</post-date>
+            </row>
+        </post>
+        {% endfor %}
+    </posts>
+</main>

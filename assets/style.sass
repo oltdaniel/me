@@ -1,0 +1,114 @@
+---
+---
+/* Copyright (C) 2019  Daniel Oltmanns */
+*
+    box-sizing: border-box
+
+// layout
+footer
+    margin: 20px auto
+    text-align: center
+    color: #8a8a8a
+
+// typography
+body
+    font-family: serif
+
+span
+    white-space: pre
+
+body, a
+    color: #212121
+
+// nav
+header
+    display: block
+    max-width: 750px
+    margin: 20px auto
+
+    brand
+        font-weight: bold
+        margin-right: 50px
+
+    ul
+        display: inline-block
+        list-style: none
+        padding: 0
+        margin: 0
+
+// misc
+section
+    max-width: 350px
+    margin: 50px auto
+
+post-container
+    display: block
+    max-width: 750px
+    margin: 0 auto
+
+    post-meta
+        color: #8a8a8a
+
+pre
+    padding: 20px
+    overflow-y: hidden
+    overflow-x: auto
+    border: 1px solid #212121
+
+    code muted
+        color: #8a8a8a
+
+row
+    display: block
+
+    & > *
+        display: inline-block
+
+hr
+    display: block
+    width: 70%
+    border: none
+    outline: none
+    height: 1px
+    background: #8a8a8a
+
+// me
+me
+    display: block
+    max-width: 200px
+    margin: 40px auto
+
+    img
+        display: block
+        border-radius: 50%
+        max-width: 150px
+        margin: 0 auto
+
+    h2
+        text-align: center
+
+    span
+        display: block
+        padding: 10px 0
+
+        &:nth-child(even)
+            text-align: right
+
+// posts
+posts
+    display: block
+    margin: 20px auto
+    max-width: 350px
+
+    post
+        margin: 15px 0
+        cursor: pointer
+
+        & > *
+            display: block
+
+        post-title
+            font-weight: bold
+
+        post-date
+            float: right
