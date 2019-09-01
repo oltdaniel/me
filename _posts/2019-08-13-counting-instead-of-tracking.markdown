@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Counting instead of tracking"
-date: 2019-08-13
 author: Daniel Oltmanns
 tags: analytics, privacy
 ---

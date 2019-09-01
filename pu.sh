@@ -6,4 +6,4 @@ for f in `find _site -name "*.html" -type f`; do
     htmlbeautifier $f
     echo $f
 done
-scp -r _site/* root@oltdaniel.at:/var/www/html/
+scp -r _site/* root@oltdaniel.at:/var/www/oltdaniel.at/

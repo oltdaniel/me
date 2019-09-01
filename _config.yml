@@ -2,7 +2,7 @@ baseurl: ""
 url: "https://oltdaniel.at"
 description: >-
     personal page
-permalink: :year/:title.html
+permalink: :year/:short_month/:title.html
 markdown: kramdown
 plugins:
   - jekyll-feed

@@ -10,15 +10,37 @@ footer
     text-align: center
     color: #8a8a8a
 
+    & > *
+        display: block
+
 // typography
 body
-    font-family: serif
+    font-family: monospace
 
 span
     white-space: pre
 
 body, a
     color: #212121
+
+i, em
+    font-style: normal
+
+em
+    background-color: #212121
+    color: #ffffff
+    padding: 0 2px
+
+blockquote
+    margin-left: 10px
+    padding-left: 10px
+    border-left: 2px solid #212121
+
+    p:last-child
+        color: #8a8a8a
+
+        &:before
+            content: '~ '
 
 // nav
 header
@@ -66,6 +88,7 @@ row
 
 hr
     display: block
+    margin: 40px auto
     width: 70%
     border: none
     outline: none
@@ -101,6 +124,7 @@ posts
     max-width: 350px
 
     post
+        display: block
         margin: 15px 0
         cursor: pointer
 
@@ -112,3 +136,9 @@ posts
 
         post-date
             float: right
+
+// pgp
+pgp
+    display: block
+    max-width: 500px
+    margin: 20px auto
