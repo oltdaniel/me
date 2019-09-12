@@ -31,6 +31,13 @@ em
     color: #ffffff
     padding: 0 2px
 
+h3
+    background-color: #212121
+    color: #ffffff
+    display: inline-block
+    margin: 0
+    padding: 5px 10px
+
 blockquote
     margin-left: 10px
     padding-left: 10px
@@ -136,6 +143,35 @@ posts
 
         post-date
             float: right
+
+// projects
+projects
+    display: block
+    margin: 20px auto
+    max-width: 350px
+
+    project
+        display: block
+        margin: 15px 0
+        cursor: pointer
+        padding-bottom: 10px
+        border-bottom: 1px solid #8a8a8a
+
+        &:last-child
+            border-bottom: none
+
+        & > *
+            display: block
+
+        project-title
+            font-weight: bold
+
+            project-language
+                float: right
+                font-weight: normal
+
+        project-slogan
+            color: #8a8a8a
 
 // pgp
 pgp
