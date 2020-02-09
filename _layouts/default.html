@@ -6,8 +6,8 @@
 
         <link rel="icon" href="/o.ico">
 
-        <link rel="stylesheet" href="{{ "/assets/style.css" | absolute_url }}">
-        <link rel="stylesheet" href="https://api.oltdaniel.at/style.css">
+        <link rel="stylesheet" href="{{ '/assets/style.css' | absolute_url }}">
+        <script src="{{ '/assets/script.js' | absolute_url }}" charset="utf-8"></script>
 
         <title>oltdaniel{% if page.title %} - {{ page.title }}{% endif %}</title>
 
@@ -28,10 +28,8 @@
         {{ content }}
 
         <footer>
-            <span>Copyright (C) 2019  Daniel Oltmanns</span>
-            <a href="{{ "/pgp.html" | absolute_url }}" target="_blank">PGP</a>
+            <span>Copyright (C) {{ 'now' | date: '%Y' }}  Daniel Oltmanns</span>
+            <a href="{{ '/pgp.html' | absolute_url }}" target="_blank">PGP</a>
         </footer>
     </body>
-
-    <script src="{{ "/assets/script.js" | absolute_url }}" charset="utf-8"></script>
 </html>

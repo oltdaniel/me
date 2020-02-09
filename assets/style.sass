@@ -1,12 +1,12 @@
 ---
 ---
-/* Copyright (C) 2019  Daniel Oltmanns */
+/* Copyright (C) 2020  Daniel Oltmanns */
 *
     box-sizing: border-box
 
 // layout
 footer
-    margin: 20px auto
+    margin: 30px auto
     text-align: center
     color: #8a8a8a
 
@@ -50,20 +50,36 @@ blockquote
             content: '~ '
 
 // nav
-header
-    display: block
+nav
     max-width: 750px
+    width: 90%
     margin: 20px auto
+    display: flex
+    align-items: center
 
     brand
-        font-weight: bold
-        margin-right: 50px
+        flex: 1
+        display: flex
+        align-items: center
+
+        img
+            width: 50px
+            border-radius: 50%
+            margin-right: 20px
+
+        span
+            vertical-align: middle
+            font-weight: bold
 
     ul
-        display: inline-block
         list-style: none
+        justify-self: end
         padding: 0
         margin: 0
+
+        li
+            margin-left: 20px
+            display: inline-block
 
 // misc
 section
@@ -72,8 +88,10 @@ section
 
 post-container
     display: block
+    width: 90%
     max-width: 750px
     margin: 0 auto
+    text-align: justify
 
     post-meta
         color: #8a8a8a
@@ -157,7 +175,7 @@ projects
         padding-bottom: 10px
         border-bottom: 1px solid #8a8a8a
 
-        &:last-child
+        &:last-of-type
             border-bottom: none
 
         & > *

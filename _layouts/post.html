@@ -4,7 +4,6 @@ layout: page
 {% assign words_in_article = page.content | number_of_words %}
 
 <post-container>
-    <a href="/">go back</a>
     <h2>{{ page.title }}</h2>
     <post-meta>
         <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time>
