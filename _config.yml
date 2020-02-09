@@ -10,9 +10,10 @@ plugins:
 sass:
   style: compressed
 highlighter: none
-future: true
+future: false
 excerpt_separator: <!--abstract-->
 exclude:
   - Gemfile
   - Gemfile.lock
   - pu.sh
+  - CNAME
