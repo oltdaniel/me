@@ -11,6 +11,8 @@ counting single requests to tracking the use across multiple websites.
 
 <!--abstract-->
 
+<hr>
+
 We at <u>fcused.at</u> decided against this trend and went back to the old
 classics of website analysis. We start counting the unique requests, instead of
 tracking the user across our website. You may ask yourself now, what the

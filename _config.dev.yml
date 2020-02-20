@@ -10,7 +10,7 @@ plugins:
 sass:
   style: compressed
 highlighter: none
-future: false
+future: true
 excerpt_separator: <!--abstract-->
 exclude:
   - Gemfile
