@@ -1,0 +1,117 @@
+---
+layout: post
+title: "COVID-19 analysis"
+author: Daniel Oltmanns
+tags: analysis, covid-19
+---
+<p>COVID-19 is a virus that spreads rapidly and has been confirmed nearly all over the globe. The "Johns Hopkins Whiting
+School of Engineering" has an great dataset of COVID-19 cases across the globe per Country/Region. I mirror their 
+dataset to an own format by having each country in another csv file to
+<a href="https://c.oltdaniel.at/datasets" target="_blank"><em>htps://c.oltdaniel.at/datasets</em></a>. To see what we
+    can do with the data I create some simple graphics in this article.</p>
+
+<!--abstract-->
+
+<hr>
+
+<blockquote><b>NOTE:</b> I am not an professional. This is just some visualizations of real-world data and guesses which crunched
+numbers are important and to look at.</blockquote>
+
+<h3>worldwide</h3>
+
+<p>Here an overview of the worldwide data. These numbers have been calculated by adding the cases of each category per
+    country per day.</p>
+
+<canvas id="c-worldwide" height="480" width="854"></canvas>
+<p>confirmed(orange), recovered(green), deaths(red), active(blue)</p>
+
+<canvas id="c-worldwide-per-day" height="480" width="854"></canvas>
+<p>new confirmed per day(orange)</p>
+
+<b>NOTE:</b> new charts will follow
+
+<!--scripts-->
+<script src="{{ '/assets/canvas.js' | absolute_url }}" charset="utf-8"></script>
+<script src="{{ '/assets/csv.js' | absolute_url }}" charset="utf-8"></script>
+<script>
+const URL_BASE = 'https://c.oltdaniel.at/datasets/';
+let dataCache = {};
+
+function findMax(data) {
+    let maxValue = data[0];
+    for(let i = 1; i < data.length; i++) {
+        if(data[i] > maxValue) {
+            maxValue = data[i];
+        }
+    }
+    return maxValue;
+}
+
+function CheckOnPushArray(opts) {
+    this.data = [];
+    this.opts = opts;
+}
+
+CheckOnPushArray.prototype.push = function(item) {
+    this.data.push(item);
+    for(let i = 0; i < this.opts.length; i++) {
+        let itemIndex = this.opts[i].requires.indexOf(item);
+        if(itemIndex > -1) {
+            this.opts[i].requires.splice(itemIndex, 1);
+            if(this.opts[i].requires.length === 0) {
+                this.opts[i].call();
+            }
+        }
+    }
+};
+
+function o() {
+    // get charts
+    let worldwide = new Chart('c-worldwide');
+    let worldwidePerDay = new Chart('c-worldwide-per-day');
+    // set triggers and callbacks
+    let drawCallback = function(tag, chart, column, lineColor, updateMax) {
+        return function(filedata) {
+            let csv = new CSV(filedata);
+            let data = csv.allValuesByHeader(column);
+            dataCache[tag] = csv;
+            if(updateMax) {
+                let max = findMax(data);
+                chart.setMax(max);
+            }
+            chart.drawData(data, lineColor);
+            drawnCharts.push(tag);
+        };
+    };
+    let generateActiveData = function() {
+        let activeData = [];
+        let confirmed = dataCache['world.confirmed'].allValuesByHeader('confirmed'),
+            recovered = dataCache['world.recovered'].allValuesByHeader('recovered'),
+            deaths = dataCache['world.deaths'].allValuesByHeader('deaths');
+        for(let i = 0; i < dataCache['world.confirmed'].lines.length; i++) {
+            activeData[i] = confirmed[i] - recovered[i] - deaths[i]; 
+        }
+        dataCache['world.active'] = activeData;
+        drawnCharts.push('world.active');
+        worldwide.drawData(activeData, '#2196F3');
+    };
+    let drawnCharts = new CheckOnPushArray([
+        {
+            call: function() {
+                generateActiveData();
+            },
+            requires: ['world.confirmed', 'world.recovered', 'world.deaths']
+        },
+        {
+            call: function() {
+                drawCallback('world.difference', worldwidePerDay, 'difference', '#FF9800', true)(dataCache['world.confirmed'].raw);
+            },
+            requires: ['world.confirmed']
+        },
+    ]);
+    // draw worldwide
+    fileByUrl(URL_BASE + 'world.confirmed.csv', drawCallback('world.confirmed', worldwide, 'confirmed', '#FF9800', true));
+    fileByUrl(URL_BASE + 'world.recovered.csv', drawCallback('world.recovered', worldwide, 'recovered', '#4CAF50', false));
+    fileByUrl(URL_BASE + 'world.deaths.csv', drawCallback('world.deaths', worldwide, 'deaths', '#F44336', false));
+}
+</script>

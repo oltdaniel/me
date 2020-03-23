@@ -14,6 +14,7 @@ footer
 // typography
 body
     font-family: monospace
+    line-height: 1.3
 
 span
     white-space: pre
@@ -33,7 +34,7 @@ h3
     background-color: #212121
     color: #ffffff
     display: inline-block
-    margin: 0
+    margin: 10px 0 0
     padding: 5px 10px
 
 blockquote
@@ -95,11 +96,37 @@ post-container
     post-meta
         color: #8a8a8a
 
+    canvas
+        width: 100%
+        max-width: 500px
+        margin: 10px auto 0 auto
+        display: block
+        border: 1px solid #8a8a8a
+        padding: 5px
+
+        & + p
+            display: block
+            text-align: center
+            margin: 0 auto
+            padding: 5px
+            color: #8a8a8a
+            max-width: 500px
+            border: 1px solid #8a8a8a
+            border-top: none
+
 pre
-    padding: 20px
     overflow-y: hidden
     overflow-x: auto
     border: 1px solid #212121
+
+    pre-title
+        display: block
+        padding: 5px 20px
+        border-bottom: 1px solid #212121
+
+    code
+        padding: 0 20px 20px
+        display: block
 
     code muted
         color: #8a8a8a
@@ -118,6 +145,11 @@ hr
     outline: none
     height: 1px
     background: #8a8a8a
+
+image-element
+    display: block
+    margin: 20px 0
+    text-align: center
 
 // me
 me
@@ -160,6 +192,16 @@ posts
 
         post-date
             float: right
+
+ol, ul
+    li
+        margin: 10px 0
+
+        & span:target + * + a
+            background: yellow
+
+h4:target + * + pre, h4:target + * + pre + pre
+    background: yellow !important
 
 // projects
 projects
