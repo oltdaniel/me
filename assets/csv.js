@@ -5,28 +5,41 @@ function fileByUrl(url, callback) {
             callback(xhttp.responseText);
         }
     };
-    xhttp.open('GET', url);
+    xhttp.open('GET', url, true);
     xhttp.send();
 }
 
-function CSV(data) {
+function CSV(data, state = null) {
     this.raw = data;
     this.lines = [];
     let rawLines = data.split('\n');
     this.headers = rawLines.shift().split(',');
-    for(let i = 1; i < rawLines.length; i++) {
-        this.lines[i-1] = rawLines[i].split(',');
+    if(this.headers.indexOf('state') > -1 && state === null) {
+        return undefined;
+    }
+    if(state === null) {
+        for(let i = 1; i < rawLines.length; i++) {
+            let vals = rawLines[i].split(',');
+            this.lines[i - 1] = vals;
+        }
+    } else {
+        for (let i = 1; i < rawLines.length; i++) {
+            let vals = rawLines[i].split(',');
+            if (vals[0] === state) {
+                this.lines.push(vals);
+            }
+        }
     }
 }
 
 CSV.prototype.allValuesByHeader = function(header) {
-    if(this.headers.indexOf(header) === -1) {
+    let headerIndex = this.headers.indexOf(header);
+    if(headerIndex === -1) {
         return undefined;
     }
-    let headerIndex = this.headers.indexOf(header);
     let result = [];
     for(let i = 0; i < this.lines.length; i++) {
-        result.push(parseInt(this.lines[i][headerIndex]));
+        result[i] = parseInt(this.lines[i][headerIndex]);
     }
     return result;
 };

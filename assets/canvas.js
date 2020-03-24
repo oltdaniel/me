@@ -8,7 +8,6 @@ const DEFAULT_OPTS = {
 function Chart(id, opts = DEFAULT_OPTS) {
     let el = document.getElementById(id);
     this.canvas = el;
-    this.hasDraw = false;
     this.opts = {
         maxDays: 60, // two months
         drawDots: false, // on data entry
@@ -21,7 +20,6 @@ function Chart(id, opts = DEFAULT_OPTS) {
 }
 
 Chart.prototype.drawData = function(data, color) {
-    this.hasDraw = true;
     let c = this.canvas.getContext('2d');
     c.beginPath();
     c.strokeStyle = color;
@@ -34,7 +32,6 @@ Chart.prototype.drawData = function(data, color) {
 };
 
 Chart.prototype.setMax = function(max) {
-    if(this.hasDraw) return;
     this.opts.maxY = max;
     this.calculatePxValues();
 };
