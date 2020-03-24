@@ -45,6 +45,16 @@ numbers are important and to look at.</blockquote>
 <canvas id="c-china" height="480" width="854"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
+<h3>Spain</h3>
+
+<canvas id="c-spain" height="480" width="854"></canvas>
+<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
+
+<h3>UK</h3>
+
+<canvas id="c-uk" height="480" width="854"></canvas>
+<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
+
 <b>NOTE:</b> new charts will follow
 
 <!--scripts-->
@@ -90,6 +100,8 @@ function o() {
             'us': new Chart('c-us'),
             'germany': new Chart('c-germany'),
             'china': new Chart('c-china'),
+            'spain': new Chart('c-spain'),
+            'united_kingdom': new Chart('c-uk'),
         },
         chartsKeys = Object.keys(charts);
     // set triggers and callbacks
@@ -139,6 +151,18 @@ function o() {
                 requires: [country + '.confirmed', country + '.recovered', country + '.deaths']
             });
         }
+        triggers.push({
+            call: function() {
+                fileByUrl(URL_BASE + country + '.recovered.csv', drawCallback(country + '.recovered', charts[country], 'recovered', '#4CAF50', false));
+            },
+            requires: [country + '.confirmed']
+        });
+        triggers.push({
+            call: function() {
+                fileByUrl(URL_BASE + country + '.deaths.csv', drawCallback(country + '.deaths', charts[country], 'deaths', '#F44336', false));
+            },
+            requires: [country + '.recovered']
+        });
     };
     for(let i = 0; i < chartsKeys.length; i++) {
         addCountry(chartsKeys[i]);
@@ -154,8 +178,6 @@ function o() {
             state = statep[1];
         }
         fileByUrl(URL_BASE + countryName + '.confirmed.csv', drawCallback(country + '.confirmed', charts[country], 'confirmed', '#FF9800', true, state));
-        fileByUrl(URL_BASE + countryName + '.recovered.csv', drawCallback(country + '.recovered', charts[country], 'recovered', '#4CAF50', false, state));
-        fileByUrl(URL_BASE + countryName + '.deaths.csv', drawCallback(country + '.deaths', charts[country], 'deaths', '#F44336', false, state));
     };
     for(let i = 0; i < chartsKeys.length; i++) {
         executeCountry(chartsKeys[i]);

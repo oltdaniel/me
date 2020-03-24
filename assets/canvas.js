@@ -23,7 +23,7 @@ Chart.prototype.drawData = function(data, color) {
     let c = this.canvas.getContext('2d');
     c.beginPath();
     c.strokeStyle = color;
-    c.lineWidth = 2;
+    c.lineWidth = 1.5;
     c.moveTo(0,this.opts.height - data[0] * this.opts.pxPerValue);
     for(let i = 1; i < data.length; i++) {
         c.lineTo(i * this.opts.pxPerDay, this.opts.height - data[i] * this.opts.pxPerValue);
