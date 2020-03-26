@@ -55,6 +55,16 @@ numbers are important and to look at.</blockquote>
 <canvas id="c-uk" height="480" width="854"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
+<h3>India</h3>
+
+<canvas id="c-india" height="480" width="854"></canvas>
+<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
+
+<h3>Russia</h3>
+
+<canvas id="c-russia" height="480" width="854"></canvas>
+<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
+
 <b>NOTE:</b> new charts will follow
 
 <!--scripts-->
@@ -102,6 +112,8 @@ function o() {
             'china': new Chart('c-china'),
             'spain': new Chart('c-spain'),
             'united_kingdom': new Chart('c-uk'),
+            'india': new Chart('c-india'),
+            'russia': new Chart('c-russia'),
         },
         chartsKeys = Object.keys(charts);
     // set triggers and callbacks
