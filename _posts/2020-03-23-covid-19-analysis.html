@@ -120,6 +120,7 @@ function o() {
     let drawCallback = function(tag, chart, column, lineColor, updateMax, state = null) {
         return function(filedata) {
             let csv = new CSV(filedata, state);
+            csv.limitToLast(60);
             let data = csv.allValuesByHeader(column);
             dataCache[tag] = csv;
             if(updateMax) {

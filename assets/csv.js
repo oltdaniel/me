@@ -43,3 +43,9 @@ CSV.prototype.allValuesByHeader = function(header) {
     }
     return result;
 };
+
+CSV.prototype.limitToLast = function(limit) {
+    if(this.lines.length > limit) {
+        this.lines = this.lines.slice(-limit, this.lines.length);
+    }
+};
