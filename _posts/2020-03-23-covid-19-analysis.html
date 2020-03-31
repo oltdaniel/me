@@ -17,57 +17,27 @@ dataset to an own format by having each country in another csv file to
 <blockquote><b>NOTE:</b> I am not an professional. This is just some visualizations of real-world data and guesses which crunched
 numbers are important and to look at.</blockquote>
 
-<blockquote><b>NOTE:</b> The background grid in each chart is 7days width, and 10% of the total confirmed cases high.</blockquote>
+<blockquote><b>NOTE:</b> The background grid in each chart is 7days width, and 10% of the total confirmed cases high. The left axis
+describes the total case number, the right axis the new confirmed per day cases and the bottom axis the dates.</blockquote>
 
-<h3>worldwide</h3>
+<div id="charts"></div>
 
-<p>Here an overview of the worldwide data. These numbers have been calculated by adding the cases of each category per
-    country per day.</p>
+<div style="margin: 20px; text-align: center">
+<button onclick="loadAll(this)" id="load-all">Load all countries</button>
+</div>
 
-<canvas id="c-world" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
+<template style="visibility: hidden" id="chart-template">
+    <h3>COUNTRY</h3>
 
-<h3>Italy</h3>
-
-<canvas id="c-italy" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>US</h3>
-
-<canvas id="c-us" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>Germany</h3>
-
-<canvas id="c-germany" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>China</h3>
-
-<canvas id="c-china" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>Spain</h3>
-
-<canvas id="c-spain" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>UK</h3>
-
-<canvas id="c-uk" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>India</h3>
-
-<canvas id="c-india" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<h3>Russia</h3>
-
-<canvas id="c-russia" height="720 " width="1280"></canvas>
-<p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
-
-<b>NOTE:</b> new charts will follow
+    <canvas id="c-COUNTRY" height="720 " width="1280"></canvas>
+    <p>
+        confirmed(<span style="color: #FF9800">orange</span>),
+        recovered(<span style="color: #4CAF50">green</span>),
+        deaths(<span style="color: #F44336">red</span>),
+        active(<span style="color: #2196F3">blue</span>)<br>
+        new confirmed per day(<span style="color: #673AB7">purple</span>|right-axis)
+    </p>
+</template>
 
 <!--scripts-->
 <script src="{{ '/assets/canvas.js' | absolute_url }}" charset="utf-8"></script>
@@ -94,20 +64,26 @@ CheckOnPushArray.prototype.push = function(item) {
     }
 };
 
-function o() {
+let created = [];
+function createCharts(countries) {
+    let needToCreate = [];
+    for(let i = 0; i < countries.length; i++) {
+        if(created.indexOf(countries[i]) === -1) {
+            created.push(countries[i]);
+            needToCreate.push(countries[i]);
+        }
+    }
     // get charts
-    let charts = {
-            'world': new Chart('c-world'),
-            'italy': new Chart('c-italy'),
-            'us': new Chart('c-us'),
-            'germany': new Chart('c-germany'),
-            'china': new Chart('c-china'),
-            'spain': new Chart('c-spain'),
-            'united_kingdom': new Chart('c-uk'),
-            'india': new Chart('c-india'),
-            'russia': new Chart('c-russia'),
-        },
-        chartsKeys = Object.keys(charts);
+    let charts = {};
+    let container = document.getElementById('charts'),
+        template = document.getElementById('chart-template');
+    for(let i = 0; i < needToCreate.length; i++) {
+        let el = document.createElement('div');
+        el.innerHTML = template.innerHTML.replace(/COUNTRY/g, needToCreate[i]);
+        container.appendChild(el);
+        charts[needToCreate[i]] = new Chart('c-' + needToCreate[i]);
+    }
+    const chartsKeys = Object.keys(charts);
     // set triggers and callbacks
     let drawCallback = function(tag, chart, column, lineColor, updateMax, state = null) {
         return function(filedata) {
@@ -196,5 +172,27 @@ function o() {
     for(let i = 0; i < chartsKeys.length; i++) {
         executeCountry(chartsKeys[i]);
     }
+}
+
+function o() {
+    createCharts(['world', 'germany', 'us', 'netherlands', 'united_kingdom', 'iran', 'china']);
+}
+
+function loadAll(t) {
+    t.disabled = true;
+    fileByUrl('https://c.oltdaniel.at/links.txt', function(filedata) {
+        let countries = [];
+        let lines = filedata.split('\n');
+        for(let i = 0; i < lines.length; i++) {
+            countries.push(lines[i].replace(URL_BASE, '').replace(/\.(confirmed|recovered|deaths).csv/, ''));
+        }
+        t.remove();
+        for(let i = 0; i < Math.ceil(countries.length / 10); i++) {
+            let cur = countries.slice(i * 10, (i + 1) * 10);
+            setTimeout(function () {
+                createCharts(cur);
+            }, 100 * i);
+        }
+    });
 }
 </script>
