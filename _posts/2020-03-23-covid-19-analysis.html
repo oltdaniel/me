@@ -17,52 +17,54 @@ dataset to an own format by having each country in another csv file to
 <blockquote><b>NOTE:</b> I am not an professional. This is just some visualizations of real-world data and guesses which crunched
 numbers are important and to look at.</blockquote>
 
+<blockquote><b>NOTE:</b> The background grid in each chart is 7days width, and 10% of the total confirmed cases high.</blockquote>
+
 <h3>worldwide</h3>
 
 <p>Here an overview of the worldwide data. These numbers have been calculated by adding the cases of each category per
     country per day.</p>
 
-<canvas id="c-world" height="480" width="854"></canvas>
+<canvas id="c-world" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>Italy</h3>
 
-<canvas id="c-italy" height="480" width="854"></canvas>
+<canvas id="c-italy" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>US</h3>
 
-<canvas id="c-us" height="480" width="854"></canvas>
+<canvas id="c-us" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>Germany</h3>
 
-<canvas id="c-germany" height="480" width="854"></canvas>
+<canvas id="c-germany" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>China</h3>
 
-<canvas id="c-china" height="480" width="854"></canvas>
+<canvas id="c-china" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>Spain</h3>
 
-<canvas id="c-spain" height="480" width="854"></canvas>
+<canvas id="c-spain" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>UK</h3>
 
-<canvas id="c-uk" height="480" width="854"></canvas>
+<canvas id="c-uk" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>India</h3>
 
-<canvas id="c-india" height="480" width="854"></canvas>
+<canvas id="c-india" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <h3>Russia</h3>
 
-<canvas id="c-russia" height="480" width="854"></canvas>
+<canvas id="c-russia" height="720 " width="1280"></canvas>
 <p>confirmed(orange), recovered(green), deaths(red), active(blue), new confirmed per day(purple|off-scale)</p>
 
 <b>NOTE:</b> new charts will follow
@@ -73,16 +75,6 @@ numbers are important and to look at.</blockquote>
 <script>
 const URL_BASE = 'https://c.oltdaniel.at/datasets/';
 let dataCache = {};
-
-function findMax(data) {
-    let maxValue = data[0];
-    for(let i = 1; i < data.length; i++) {
-        if(data[i] > maxValue) {
-            maxValue = data[i];
-        }
-    }
-    return maxValue;
-}
 
 function CheckOnPushArray(opts) {
     this.data = [];
@@ -160,12 +152,21 @@ function o() {
                 call: function () {
                     generateActiveData(country, charts[country]);
                     drawCallback(country + '.difference', charts[country], 'difference', '#673AB7', true)(dataCache[country + '.confirmed'].raw);
+                    charts[country].drawBottomAxis(dataCache[country + '.confirmed']);
                 },
                 requires: [country + '.confirmed', country + '.recovered', country + '.deaths']
             });
         }
         triggers.push({
             call: function() {
+                charts[country].drawRightAxis(dataCache[country + '.difference']);
+            },
+            requires: [country + '.difference']
+        });
+        triggers.push({
+            call: function() {
+                charts[country].drawLeftAxis(dataCache[country + '.confirmed']);
+                charts[country].drawGrid(dataCache[country + '.confirmed']);
                 fileByUrl(URL_BASE + country + '.recovered.csv', drawCallback(country + '.recovered', charts[country], 'recovered', '#4CAF50', false));
             },
             requires: [country + '.confirmed']
