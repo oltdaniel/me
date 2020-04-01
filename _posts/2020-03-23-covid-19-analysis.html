@@ -112,13 +112,11 @@ function createCharts(countries) {
     };
     // update since yesterday stats
     let updateSinceYesterday = function(country) {
-        console.log('yesterday')
         let lastConfirmed = dataCache[country + '.confirmed'].allValuesByHeader('confirmed').slice(-2),
             lastRecovered = dataCache[country + '.recovered'].allValuesByHeader('recovered').slice(-2),
             lastDeaths = dataCache[country + '.deaths'].allValuesByHeader('deaths').slice(-2),
             lastActive = dataCache[country + '.active'].slice(-2),
             el = document.getElementById('since-yesterday-' + country);
-        console.log(lastConfirmed);
         el.innerHTML = el.innerHTML.replace('CONFIRMED', stringWithSymbol(lastConfirmed[1] - lastConfirmed[0]))
             .replace('RECOVERED', stringWithSymbol(lastRecovered[1] - lastRecovered[0]))
             .replace('DEATHS', stringWithSymbol(lastDeaths[1] - lastDeaths[0]))
