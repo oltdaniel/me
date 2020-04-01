@@ -103,7 +103,7 @@ post-container
         border: 1px solid #8a8a8a
         padding: 5px
 
-        & + p
+        & + loading + p
             display: block
             text-align: center
             margin: 0 auto
@@ -114,6 +114,21 @@ post-container
 
             span
                 font-weight: bold
+
+        &.hidden
+            display: none
+
+            & + loading
+                display: block
+                padding: 100px 0
+                text-align: center
+                font-weight: bold
+                border: 1px solid #8a8a8a
+                margin: 10px auto 0 auto
+                font-size: 1.5rem
+
+        & + loading
+            display: none
 
 pre
     overflow-y: hidden
@@ -151,6 +166,21 @@ image-element
     display: block
     margin: 20px 0
     text-align: center
+
+#load-all
+    padding: 5px 10px
+    background: #212121
+    color: #fff
+    border: none
+    outline: none
+    text-align: center
+    cursor: pointer
+
+    &:hover, &:disabled
+        background: #3a3a3a
+
+    &:active
+        background: #000000
 
 // me
 me
@@ -238,19 +268,3 @@ pgp
     display: block
     max-width: 500px
     margin: 20px auto
-
-// misc
-#load-all
-    padding: 5px 10px
-    background: #212121
-    color: #fff
-    border: none
-    outline: none
-    text-align: center
-    cursor: pointer
-
-    &:hover
-        background: #3a3a3a
-
-    &:active
-        background: #000000

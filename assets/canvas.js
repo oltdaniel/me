@@ -24,7 +24,7 @@ function Chart(id, opts = DEFAULT_OPTS) {
         minY: 0, // min y value
         maxY: 100, // max x value
     };
-    this.opts.sideAxisOffset = (el.getAttribute('width') / 100) * 2;
+    this.opts.sideAxisOffset = (el.getAttribute('width') / 100) * 2.5;
     this.opts.height = el.getAttribute('height') - this.opts.sideAxisOffset;
     this.opts.width = el.getAttribute('width') - (this.opts.sideAxisOffset * 2);
     this.calculatePxValues();
@@ -73,6 +73,10 @@ String.prototype.intWithCommas = function() {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+Number.prototype.intWithCommas = function() {
+    return String(this).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 Chart.prototype.drawLeftAxis = function(data) {
     let max = findMax(data.allValuesByHeader('confirmed'));
     let low = 0;
@@ -92,6 +96,9 @@ Chart.prototype.drawLeftAxis = function(data) {
     c.stroke();
     c.fillText(String(low), 2, this.opts.height);
     c.fillVerticalText(String(max).intWithCommas(), 0, 20, 23);
+    c.font = "bold 15px Courier New";
+    c.fillText("50%", 0, this.opts.height / 2);
+    c.fillText("10%", 0, (this.opts.height / 100) * 90);
 };
 
 Chart.prototype.drawRightAxis = function(data) {

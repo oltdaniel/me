@@ -29,13 +29,15 @@ describes the total case number, the right axis the new confirmed per day cases 
 <template style="visibility: hidden" id="chart-template">
     <h3>COUNTRY</h3>
 
-    <canvas id="c-COUNTRY" height="720 " width="1280"></canvas>
+    <canvas id="c-COUNTRY" height="720" width="1280" class="hidden"></canvas>
+    <loading>crunching numbers...</loading>
     <p>
         confirmed(<span style="color: #FF9800">orange</span>),
         recovered(<span style="color: #4CAF50">green</span>),
         deaths(<span style="color: #F44336">red</span>),
         active(<span style="color: #2196F3">blue</span>)<br>
-        new confirmed per day(<span style="color: #673AB7">purple</span>|right-axis)
+        new confirmed per day(<span style="color: #673AB7">purple</span>|right-axis)<br><br>
+        <u id="since-yesterday-COUNTRY">since yesterday:<span style="color: #FF9800">CONFIRMED</span>|<span style="color: #4CAF50">RECOVERED</span>|<span style="color: #F44336">DEATHS</span>|<span style="color: #2196F3">ACTIVE</span></u>
     </p>
 </template>
 
@@ -64,8 +66,16 @@ CheckOnPushArray.prototype.push = function(item) {
     }
 };
 
+function stringWithSymbol(num) {
+    return (num < 0) ? num.intWithCommas() : '+' + num.intWithCommas();
+}
+
+// keep track of rendered elements
 let created = [];
+
+// combined call to append charts of each country in countries
 function createCharts(countries) {
+    // determine which countries still need to be rendered
     let needToCreate = [];
     for(let i = 0; i < countries.length; i++) {
         if(created.indexOf(countries[i]) === -1) {
@@ -73,7 +83,7 @@ function createCharts(countries) {
             needToCreate.push(countries[i]);
         }
     }
-    // get charts
+    // create chart html elements by template
     let charts = {};
     let container = document.getElementById('charts'),
         template = document.getElementById('chart-template');
@@ -83,8 +93,9 @@ function createCharts(countries) {
         container.appendChild(el);
         charts[needToCreate[i]] = new Chart('c-' + needToCreate[i]);
     }
+    // needed charts to render
     const chartsKeys = Object.keys(charts);
-    // set triggers and callbacks
+    // parse data and draw data to chart
     let drawCallback = function(tag, chart, column, lineColor, updateMax, state = null) {
         return function(filedata) {
             let csv = new CSV(filedata, state);
@@ -99,20 +110,41 @@ function createCharts(countries) {
             drawnCharts.push(tag);
         };
     };
+    // update since yesterday stats
+    let updateSinceYesterday = function(country) {
+        console.log('yesterday')
+        let lastConfirmed = dataCache[country + '.confirmed'].allValuesByHeader('confirmed').slice(-2),
+            lastRecovered = dataCache[country + '.recovered'].allValuesByHeader('recovered').slice(-2),
+            lastDeaths = dataCache[country + '.deaths'].allValuesByHeader('deaths').slice(-2),
+            lastActive = dataCache[country + '.active'].slice(-2),
+            el = document.getElementById('since-yesterday-' + country);
+        console.log(lastConfirmed);
+        el.innerHTML = el.innerHTML.replace('CONFIRMED', stringWithSymbol(lastConfirmed[1] - lastConfirmed[0]))
+            .replace('RECOVERED', stringWithSymbol(lastRecovered[1] - lastRecovered[0]))
+            .replace('DEATHS', stringWithSymbol(lastDeaths[1] - lastDeaths[0]))
+            .replace('ACTIVE', stringWithSymbol(lastActive[1] - lastActive[0]));
+    };
+    // generate active cases chart
     let generateActiveData = function(tag, chart) {
         let activeData = [];
         let confirmed = dataCache[tag + '.confirmed'].allValuesByHeader('confirmed'),
             recovered = dataCache[tag + '.recovered'].allValuesByHeader('recovered'),
             deaths = dataCache[tag + '.deaths'].allValuesByHeader('deaths');
+        // calculate difference per day
         for(let i = 0; i < dataCache[tag + '.confirmed'].lines.length; i++) {
             activeData[i] = confirmed[i] - recovered[i] - deaths[i]; 
         }
+        // store and render data
         dataCache[tag + '.active'] = activeData;
         drawnCharts.push(tag + '.active');
         chart.drawData(activeData, '#2196F3');
+        updateSinceYesterday(tag);
     };
+    // keep track of triggers
     let triggers = [];
+    // data loading and rendering of each country
     let addCountry = function(country) {
+        // generate active data and load difference
         if(country.indexOf('.') > -1) {
             let statep = country.split('.');
             let state = statep[1];
@@ -133,12 +165,14 @@ function createCharts(countries) {
                 requires: [country + '.confirmed', country + '.recovered', country + '.deaths']
             });
         }
+        // right axis
         triggers.push({
             call: function() {
                 charts[country].drawRightAxis(dataCache[country + '.difference']);
             },
             requires: [country + '.difference']
         });
+        // left axis, grid and recovered
         triggers.push({
             call: function() {
                 charts[country].drawLeftAxis(dataCache[country + '.confirmed']);
@@ -147,18 +181,28 @@ function createCharts(countries) {
             },
             requires: [country + '.confirmed']
         });
+        // load deaths
         triggers.push({
             call: function() {
                 fileByUrl(URL_BASE + country + '.deaths.csv', drawCallback(country + '.deaths', charts[country], 'deaths', '#F44336', false));
             },
             requires: [country + '.recovered']
         });
+        // display canvas if exists
+        triggers.push({
+            call: function() {
+                charts[country].canvas.classList.remove('hidden');
+            },
+            requires: [country + '.confirmed', country + '.recovered', country + '.deaths', country + '.difference', country + '.active']
+        })
     };
+    // create each country
     for(let i = 0; i < chartsKeys.length; i++) {
         addCountry(chartsKeys[i]);
     }
+    // keep track of all triggers
     let drawnCharts = new CheckOnPushArray(triggers);
-
+    // start country load
     let executeCountry = function(country) {
         let countryName = country;
         let state = null;
@@ -169,17 +213,21 @@ function createCharts(countries) {
         }
         fileByUrl(URL_BASE + countryName + '.confirmed.csv', drawCallback(country + '.confirmed', charts[country], 'confirmed', '#FF9800', true, state));
     };
+    // start needed countries to render
     for(let i = 0; i < chartsKeys.length; i++) {
         executeCountry(chartsKeys[i]);
     }
 }
 
+// will be triggered by body onload event
 function o() {
-    createCharts(['world', 'germany', 'us', 'netherlands', 'united_kingdom', 'iran', 'china']);
+    createCharts(['world', 'germany', 'us', 'netherlands', 'italy', 'spain', 'united_kingdom', 'iran', 'china']);
 }
 
+// load all available countries
 function loadAll(t) {
     t.disabled = true;
+    t.innerText = 'Loading...';
     fileByUrl('https://c.oltdaniel.at/links.txt', function(filedata) {
         let countries = [];
         let lines = filedata.split('\n');
