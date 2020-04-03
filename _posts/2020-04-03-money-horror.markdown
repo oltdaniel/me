@@ -54,7 +54,15 @@ an account and is always free to use.
 
 Yes there a new companies like Klarna, Bunq, N26 and so on popping up on the market and get registered as an official
 bank. However, they cannot escape the same issues normal banks have too, they just allow us to manage our money from our
-phone instead of needing to go to the bank in person for some changes and they have way better apps than the banks. 
+phone instead of needing to go to the bank in person for some changes and they have way better apps than the banks.
+
+### servers
+
+Yes, even serves need a break on the weekend.... wait WTF. Yes transactions are paused on the weekend. Thats like google
+would do a break on the weekend. There is so much automation which already filters the stuff for fraud and the emergency
+line is 24/7 anyways. It is just sad, that 2020 isn't ready to transfer money any time to any other bank fast. It always 
+freaks me out to see the transactions in pending mode, as this is not marked as "done" for me. Additionally, you need to
+calculate every automated repeating transaction, like rent, that it does not executed before your income arrives. 
 
 ### conclusion
 
