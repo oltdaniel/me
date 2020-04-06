@@ -14,13 +14,13 @@ adopted.
 
 > I am not an expert. I study computer science and have only experience in the finance world as an customer/consumer.
 
-> **NOTE:** 6th April 2020, edit. ~marks removed text~ and _marks added text_.
+> <b>NOTE:</b> 6th April 2020, edit. <s>marks removed text</s> and <i>marks added text</i>.
 
 ### debit and credit cards
 
 Let us dive into it, with my experience today. I live in a student dormitory in the netherlands (I still study in germany)
 and we have an vending machine where you can pay with a credit card or cash. Well, there is the issue already. <b>Only
-with a <u>credit</u> card</b>. I am a student, I have no _~real world~_ reasonable use for this kind of card, I only have a debit card.
+with a <u>credit</u> card</b>. I am a student, I have no <s>real world</s> <i>reasonable</i> use for this kind of card, I only have a debit card.
 So this way will not work on the vending machine.
 
 ### google pay and paypal
@@ -72,7 +72,7 @@ Currently, there is not the perfect way to payments online or in the real world.
 everywhere and everybody needs to have different types of payment methods in order to pay nearly everywhere. This still
 requires cash, even in modern countries although we are in 2020 and everybody has a phone. 
 
-I hope there will be changes on the future and we have a decentralized open-source payment ~method~ _methods_ that can be used
-everywhere and anywhere and a good and fast way for currency exchanges on the go, in order to keep diversity alive. _And I
+I hope there will be changes on the future and we have a decentralized open-source payment <s>method</s> <i>methods</i> that can be used
+everywhere and anywhere and a good and fast way for currency exchanges on the go, in order to keep diversity alive. <i>And I
 mean there is no perfect payment methods and never will be, open-source also means everyone can open their own implementation
-or start their own currency. But the current **kind** of payment methods widely adopted just cause more issues than they solve.
+or start their own currency. But the current **kind** of payment methods widely adopted just cause more issues than they solve.</i>
