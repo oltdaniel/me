@@ -1,0 +1,45 @@
+---
+layout: post
+title: "pcdf.js"
+author: Daniel Oltmanns
+tags: pdf.js,crash
+---
+
+<blockquote><b>WARNING:</b> This will crash mobile browsers on Android.</blockquote>
+
+<p>Countdown: <span id="countdown">10</span></p>
+
+<p>
+    Need to be quick. Only a few seconds left, until this freezes. Now, this is the <b>P</b>ortable <b>C</b>rash <b>D</b>ocument <b>F</b>ormat,
+    put all together into pcdf.js . Simply load it into any website, add the pdf.js dependency and observe how the Android Browsers will crash.
+
+    <ol>
+        <li>Loading a 78 page pdf.</li>
+        <li>Rendering each page in an 5000x5000 pixel canvas</li>
+        <li>Set the scale of pdf.js to 4.5</li>
+        <li>Browser will freeze, and bye bye.</li>
+    </ol>
+</p>
+
+<script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="/pcdf.js"></script>
+<script>
+    var el = document.getElementById('countdown'),
+        start = parseInt(el.innerText),
+        wait = start,
+        trigger = Math.round((wait / 3) * 2),
+        interval = undefined;
+
+    function decrCounter() {
+        wait--;
+        el.innerHTML = wait + " seconds";
+
+        if(wait == trigger) {
+            //crash();
+        } else if(wait == 0) {
+            wait = start;
+        }
+    }
+
+    interval = setInterval(decrCounter, 1000);
+</script>
